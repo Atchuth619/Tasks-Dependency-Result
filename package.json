@@ -1,0 +1,25 @@
+{
+  "name": "tasksdependency",
+  "version": "1.0.0",
+  "description": "Find the order of tasks basing on dependeny",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "test": "jest",
+    "dev": "nodemon index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Atchuth619/Tasks-Dependency-Result.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Atchuth619/Tasks-Dependency-Result/issues"
+  },
+  "homepage": "https://github.com/Atchuth619/Tasks-Dependency-Result#readme",
+  "devDependencies": {
+    "jest": "^27.5.1",
+    "nodemon": "^2.0.15"
+  }
+}
