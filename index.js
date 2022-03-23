@@ -5,8 +5,15 @@ const checkResult = (taskData, dependenciesData) => {
     result = [];
   // Checking for dependencies are there or not
   if (dependencies.length !== 0) {
-    //Todo for cyclic dependency
-    if (!true) {
+    //Logic for cyclic dependency
+    var independentList = [], dependentList =[]
+    dependencies.map((item) => {
+      independentList.push(item.split(":")[0]);
+      dependentList.push(item.split(":")[1]);
+      independentList = [...new Set(independentList)];
+      dependentList = [...new Set(dependentList)];
+    })
+    if (independentList.sort().toString() === dependentList.sort().toString()) {
       return "Cyclic dependency";
     }
     //Logic for having dependency
