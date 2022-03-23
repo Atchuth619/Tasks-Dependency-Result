@@ -18,8 +18,8 @@ test('Having Tasks and  dependnecy', () => {
     expect(checkResult(taskData, dependenciesData)).toEqual(['c','b','a'])
 });
 
-//Test case for Having Tasks and  dependnecy Example2
-test('Having Tasks and  dependecy Example2', () => {
-    var taskData = ["a", "b", "c","d","e","f"] ,dependenciesData = ["a:b","a:c","b:d", "c:d","e:f"];
-    expect(checkResult(taskData, dependenciesData)).toEqual([ 'd', 'b', 'c', 'a', 'f', 'e' ])
+//Test case for Cyclic dependecy
+test('Cyclic dependecy', () => {
+    var taskData = ['a','b','c'] ,dependenciesData = ['a:b','b:c','c:a'];
+    expect(checkResult(taskData, dependenciesData)).toEqual('Cyclic dependency')
 });
