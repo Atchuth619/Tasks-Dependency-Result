@@ -6,14 +6,13 @@ const checkResult = (taskData, dependenciesData) => {
   // Checking for dependencies are there or not
   if (dependencies.length !== 0) {
     //Logic for cyclic dependency
-    var independentList = [], dependentList =[]
+    var independentList = [],
+      dependentList = [];
     dependencies.map((item) => {
       independentList.push(item.split(":")[0]);
       dependentList.push(item.split(":")[1]);
-      independentList = [...new Set(independentList)];
-      dependentList = [...new Set(dependentList)];
-    })
-    if (independentList.sort().toString() === dependentList.sort().toString()) {
+    });
+    if (checkCyclic(independentList, dependentList)) {
       return "Cyclic dependency";
     }
     //Logic for having dependency
@@ -39,6 +38,27 @@ const checkResult = (taskData, dependenciesData) => {
     result = tasks;
     return result;
   }
+};
+
+//check for cyclic or not
+const checkCyclic = (first, second) => {
+  const nodes = first.reduce(
+    (r, v, i) => ((r[v] = r[v] || []).push(second[i]), r),
+    {}
+  );
+  for (let n of first) {
+    const queue = [[n, []]];
+    while (queue.length) {
+      const [node, seen] = queue.shift();
+      if (!(node in nodes)) continue;
+      if (seen.includes(node)) {
+        return true;
+      }
+      seen.push(node);
+      queue.push(...nodes[node].map((a) => [a, [...seen]]));
+    }
+  }
+  return false;
 };
 
 //Pass taskData and dependenciesData
