@@ -9,8 +9,8 @@ const checkResult = (taskData, dependenciesData) => {
     var independentList = [],
       dependentList = [];
     dependencies.map((item) => {
-      independentList.push(item.split(":")[0]);
-      dependentList.push(item.split(":")[1]);
+      independentList.push(item.split("=>")[0]);
+      dependentList.push(item.split("=>")[1]);
     });
     if (checkCyclic(independentList, dependentList)) {
       return "Cyclic dependency";
@@ -19,7 +19,7 @@ const checkResult = (taskData, dependenciesData) => {
     else {
       result = tasks;
       dependencies.map((item) => {
-        var dependentItem = item.split(":");
+        var dependentItem = item.split("=>");
         var independentIndex = result.indexOf(dependentItem[0]);
         var dependentIndex = result.indexOf(dependentItem[1]);
         if (dependentIndex > independentIndex) {
