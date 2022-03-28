@@ -6,13 +6,13 @@ const checkResult = (taskData, dependenciesData) => {
   // Checking for dependencies are there or not
   if (dependencies.length !== 0) {
     //Logic for cyclic dependency
-    var independentList = [],
-      dependentList = [];
+    var leftdependencies = [],
+      rightdependencies = [];
     dependencies.map((item) => {
-      independentList.push(item.split("=>")[0]);
-      dependentList.push(item.split("=>")[1]);
+      leftdependencies.push(item.split("=>")[0]);
+      rightdependencies.push(item.split("=>")[1]);
     });
-    if (checkCyclic(independentList, dependentList)) {
+    if (checkCyclic(leftdependencies, rightdependencies)) {
       return "Cyclic dependency";
     }
     //Logic for having dependency
@@ -24,12 +24,11 @@ const checkResult = (taskData, dependenciesData) => {
         var dependentIndex = result.indexOf(dependentItem[1]);
         if (dependentIndex > independentIndex) {
           result.splice(dependentIndex, 1);
-          //p1 and p2 are slices or resultant array
-          var p1 = result.slice(0, independentIndex);
-          var p2 = result.slice(independentIndex);
-          p1.push(dependentItem[1]);
-          p1 = p1.concat(p2);
-          result = p1;
+          var leftresultarray = result.slice(0, independentIndex);
+          var rightresultarray = result.slice(independentIndex);
+          leftresultarray.push(dependentItem[1]);
+          leftresultarray = leftresultarray.concat(rightresultarray);
+          result = leftresultarray;
         }
       });
       return result;
@@ -41,12 +40,13 @@ const checkResult = (taskData, dependenciesData) => {
 };
 
 //check for cyclic or not
-const checkCyclic = (first, second) => {
-  const nodes = first.reduce(
-    (r, v, i) => ((r[v] = r[v] || []).push(second[i]), r),
+const checkCyclic = (leftdependencies, rightdependencies) => {
+  //previous value is denoted by 'r', curreny value is denoted by 'v' and 'i' is Index
+  const nodes = leftdependencies.reduce(
+    (r, v, i) => ((r[v] = r[v] || []).push(rightdependencies[i]), r),
     {}
   );
-  for (let n of first) {
+  for (let n of leftdependencies) {
     const queue = [[n, []]];
     while (queue.length) {
       const [node, seen] = queue.shift();
@@ -60,12 +60,5 @@ const checkCyclic = (first, second) => {
   }
   return false;
 };
-
-//Pass taskData and dependenciesData
-var taskData = ["a", "b", "c", "d", "e", "f"],
-  dependenciesData = ["a:b", "a:c", "b:d", "c:d", "e:f"];
-
-//Calling result function and passing taskData and dependenciesData as params to function
-checkResult(taskData, dependenciesData);
 
 module.exports = checkResult;
